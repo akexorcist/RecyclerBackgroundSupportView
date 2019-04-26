@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RecyclerBackgroundSupportView">
+        <attr name="rbsv_src" format="reference|color" />
+        <attr name="rbsv_scaleType">
+            <enum name="matrix" value="0" />
+            <enum name="fitXY" value="1" />
+            <enum name="fitStart" value="2" />
+            <enum name="fitCenter" value="3" />
+            <enum name="fitEnd" value="4" />
+            <enum name="center" value="5" />
+            <enum name="centerCrop" value="6" />
+            <enum name="centerInside" value="7" />
+        </attr>
+        <attr name="rbsv_adjustViewBounds" format="boolean" />
+        <attr name="rbsv_tint" format="color" />
+        <attr name="rbsv_cropToPadding" format="boolean" />
+        <attr name="rbsv_gravity">
+            <enum name="top" value="0" />
+            <enum name="bottom" value="1" />
+        </attr>
+    </declare-styleable>
+</resources>

@@ -1,0 +1,65 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'org.jetbrains.dokka-android'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 18
+        targetSdkVersion 28
+        versionCode 10000
+        versionName "1.0.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dokka {
+    outputFormat = 'html'
+    outputDirectory = "$buildDir/javadoc"
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.2.0-alpha04'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha04'
+}
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'recycler-background-support-view'
+
+    publishedGroupId = 'com.akexorcist'
+    libraryName = 'RecyclerBackgroundSupportView'
+    artifact = 'recycler-background-support-view'
+
+    libraryDescription = 'Add Image View behind Recycler View with scrollable support'
+
+    siteUrl = 'https://github.com/akexorcist/Android-RecyclerBackgroundSupportView'
+    gitUrl = 'https://github.com/akexorcist/Android-RecyclerBackgroundSupportView.git'
+
+    libraryVersion = '1.0.0'
+
+    developerId = 'akexorcist'
+    developerName = 'Somkiat Khitwongwattana'
+    developerEmail = 'akexorcist@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+apply from: '../publish/installv1.gradle'
+apply from: '../publish/bintrayv1.gradle'
