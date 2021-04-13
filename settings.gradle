@@ -1,1 +1,1 @@
-include ':app', ':recycler_background_support_view'
+include ':app', ':recycler-background-support-view'
