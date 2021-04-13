@@ -1,12 +1,10 @@
 package com.akexorcist.example.recyclerbackgroundsupportview.sample
 
-import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.view_item.*
+import com.akexorcist.example.recyclerbackgroundsupportview.sample.databinding.ViewItemBinding
 
-class MainViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+class MainViewHolder(private val binding: ViewItemBinding) : RecyclerView.ViewHolder(binding.root) {
     fun setText(text: String) {
-        textView.text = text
+        binding.textView.text = text
     }
 }

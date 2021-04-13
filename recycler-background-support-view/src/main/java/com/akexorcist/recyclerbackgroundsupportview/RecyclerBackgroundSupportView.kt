@@ -7,17 +7,18 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.util.SparseArray
-import android.view.View
+import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ImageView.ScaleType
-import androidx.annotation.RequiresApi
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.EdgeEffectFactory.DIRECTION_TOP
-import kotlinx.android.synthetic.main.view_recycler_background_support.view.rbsv_imageView as imageView
-import kotlinx.android.synthetic.main.view_recycler_background_support.view.rbsv_recyclerView as recyclerView
+import com.akexorcist.recyclerbackgroundsupportview.databinding.ViewRecyclerBackgroundSupportBinding
 
-class RecyclerBackgroundSupportView : FrameLayout {
+open class RecyclerBackgroundSupportView : FrameLayout {
+    private lateinit var binding: ViewRecyclerBackgroundSupportBinding
+
     private var adjustViewBounds: Boolean = false
     private var cropToPadding: Boolean = false
     private var scaleType: Int = -1
@@ -34,16 +35,6 @@ class RecyclerBackgroundSupportView : FrameLayout {
     }
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        setup(attrs)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(
-            context,
-            attrs,
-            defStyleAttr,
-            defStyleRes
-    ) {
         setup(attrs)
     }
 
@@ -69,13 +60,13 @@ class RecyclerBackgroundSupportView : FrameLayout {
         return saveInstanceState(super.onSaveInstanceState())
     }
 
-    fun getImageView(): ImageView = imageView as ImageView
+    fun getImageView(): ImageView = binding.rbsvImageView
 
-    fun getRecyclerView(): RecyclerView = recyclerView
+    fun getRecyclerView(): RecyclerView = binding.rbsvRecyclerView
 
     private fun setup(attrs: AttributeSet? = null) {
-        View.inflate(context, R.layout.view_recycler_background_support, this)
-        imageView.setRecyclerView(recyclerView)
+        binding = ViewRecyclerBackgroundSupportBinding.inflate(LayoutInflater.from(context), this, true)
+        binding.rbsvImageView.setRecyclerView(binding.rbsvRecyclerView)
         attrs?.let {
             setupStyleables(attrs)
         }
@@ -83,18 +74,12 @@ class RecyclerBackgroundSupportView : FrameLayout {
 
     private fun setupStyleables(attrs: AttributeSet?) {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.RecyclerBackgroundSupportView)
-        adjustViewBounds =
-                typedArray?.getBoolean(R.styleable.RecyclerBackgroundSupportView_rbsv_adjustViewBounds, false)
-                        ?: false
-        cropToPadding = typedArray?.getBoolean(R.styleable.RecyclerBackgroundSupportView_rbsv_cropToPadding, false)
-                ?: false
-        scaleType = typedArray?.getInt(R.styleable.RecyclerBackgroundSupportView_rbsv_scaleType, -1)
-                ?: -1
-        resId = typedArray?.getResourceId(R.styleable.RecyclerBackgroundSupportView_rbsv_src, -1)
-                ?: -1
-        gravity = typedArray?.getInt(R.styleable.RecyclerBackgroundSupportView_rbsv_gravity, ScrollSupportImageView.DIRECTION_TOP)
-                ?: ScrollSupportImageView.DIRECTION_TOP
-        tint = typedArray?.getColorStateList(R.styleable.RecyclerBackgroundSupportView_rbsv_tint)
+        adjustViewBounds = typedArray.getBoolean(R.styleable.RecyclerBackgroundSupportView_rbsv_adjustViewBounds, false)
+        cropToPadding = typedArray.getBoolean(R.styleable.RecyclerBackgroundSupportView_rbsv_cropToPadding, false)
+        scaleType = typedArray.getInt(R.styleable.RecyclerBackgroundSupportView_rbsv_scaleType, -1)
+        resId = typedArray.getResourceId(R.styleable.RecyclerBackgroundSupportView_rbsv_src, -1)
+        gravity = typedArray.getInt(R.styleable.RecyclerBackgroundSupportView_rbsv_gravity, ScrollSupportImageView.DIRECTION_TOP)
+        tint = typedArray.getColorStateList(R.styleable.RecyclerBackgroundSupportView_rbsv_tint)
         typedArray.recycle()
 
         updateImageDirection()
@@ -105,44 +90,44 @@ class RecyclerBackgroundSupportView : FrameLayout {
     }
 
     private fun updateImageDirection() {
-        imageView.setDirection(gravity)
+        binding.rbsvImageView.setDirection(gravity)
     }
 
     private fun updateImageScaleType() {
         if (scaleType >= 0) {
-            imageView.scaleType = getScaleType(scaleType)
+            binding.rbsvImageView.scaleType = getScaleType(scaleType)
         }
     }
 
     private fun updateImageDrawable() {
-        val drawable = resources.getDrawable(resId)
+        val drawable = ResourcesCompat.getDrawable(resources, resId, context.theme)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            drawable.setTintList(tint)
+            drawable?.setTintList(tint)
         }
-        imageView.setImageDrawable(drawable)
+        binding.rbsvImageView.setImageDrawable(drawable)
     }
 
     private fun updateImageCropToPadding() {
-        imageView.cropToPadding = cropToPadding
+        binding.rbsvImageView.cropToPadding = cropToPadding
     }
 
     private fun updateImageAdjustViewBounds() {
-        imageView.adjustViewBounds = adjustViewBounds
+        binding.rbsvImageView.adjustViewBounds = adjustViewBounds
     }
 
-    private fun getScaleType(index: Int): ImageView.ScaleType =
-            arrayOf(
-                    ScaleType.MATRIX,
-                    ScaleType.FIT_XY,
-                    ScaleType.FIT_START,
-                    ScaleType.FIT_CENTER,
-                    ScaleType.FIT_END,
-                    ScaleType.CENTER,
-                    ScaleType.CENTER_CROP,
-                    ScaleType.CENTER_INSIDE
-            )[index]
+    private fun getScaleType(index: Int): ScaleType =
+        arrayOf(
+            ScaleType.MATRIX,
+            ScaleType.FIT_XY,
+            ScaleType.FIT_START,
+            ScaleType.FIT_CENTER,
+            ScaleType.FIT_END,
+            ScaleType.CENTER,
+            ScaleType.CENTER_CROP,
+            ScaleType.CENTER_INSIDE
+        )[index]
 
-    private fun saveInstanceState(state: Parcelable?): Parcelable? {
+    private fun saveInstanceState(state: Parcelable?): Parcelable {
         val savedState: SavedState = onSaveInstanceChildState(SavedState(state)) as SavedState
         savedState.adjustViewBounds = adjustViewBounds
         savedState.cropToPadding = cropToPadding
@@ -195,23 +180,23 @@ class RecyclerBackgroundSupportView : FrameLayout {
         companion object {
             @JvmField
             val CREATOR: Parcelable.ClassLoaderCreator<SavedState> =
-                    object : Parcelable.ClassLoaderCreator<SavedState> {
-                        override fun createFromParcel(source: Parcel, loader: ClassLoader): SavedState {
-                            return SavedState(source, loader)
-                        }
-
-                        override fun createFromParcel(`in`: Parcel): SavedState? {
-                            return null
-                        }
-
-                        override fun newArray(size: Int): Array<SavedState?> {
-                            return arrayOfNulls(size)
-                        }
+                object : Parcelable.ClassLoaderCreator<SavedState> {
+                    override fun createFromParcel(source: Parcel, loader: ClassLoader): SavedState {
+                        return SavedState(source, loader)
                     }
+
+                    override fun createFromParcel(`in`: Parcel): SavedState? {
+                        return null
+                    }
+
+                    override fun newArray(size: Int): Array<SavedState?> {
+                        return arrayOfNulls(size)
+                    }
+                }
         }
     }
 
-    protected fun onSaveInstanceChildState(ss: ChildSavedState): Parcelable {
+    private fun onSaveInstanceChildState(ss: ChildSavedState): Parcelable {
         ss.childrenStates = SparseArray()
         for (i in 0 until childCount) {
             val id = getChildAt(i).id
@@ -235,13 +220,11 @@ class RecyclerBackgroundSupportView : FrameLayout {
                     @Suppress("UNCHECKED_CAST")
                     getChildAt(i).restoreHierarchyState(childrenState as SparseArray<Parcelable>)
                 }
-                if (ss.childrenStates?.get(id) != null) {
-                }
             }
         }
     }
 
-    abstract class ChildSavedState : View.BaseSavedState {
+    abstract class ChildSavedState : BaseSavedState {
         var childrenStates: SparseArray<Any>? = null
 
         constructor(superState: Parcelable?) : super(superState)
