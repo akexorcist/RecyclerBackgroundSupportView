@@ -4,17 +4,18 @@
 Add Image View behind Recycler View with scrollable support
 
 ## Download
-Maven
-```
-<dependency>
-	<groupId>com.akexorcist</groupId>
-	<artifactId>recycler-background-support-view</artifactId>
-	<version>1.0.0</version>
-	<type>pom</type>
-</dependency>
+Since version 1.0.0 will [move from JCenter to MavenCentral](https://developer.android.com/studio/build/jcenter-migration)
+```groovy
+// build.gradle (project)
+allprojects {
+    repositories {
+        mavenCentral()
+        /* ... */
+    }
+}
 ```
 
-Gradle
+**Gradle**
 ```
 implementation 'com.akexorcist:recycler-background-support-view:1.0.0'
 ```
@@ -40,7 +41,10 @@ recyclerBackgroundSupportView.getImageView().setImageResource(R.drawable.backgro
 ```
 
 ## Licence
-Copyright 2019 Akexorcist
+Copyright 2021 Akexorcist
+
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this work except in compliance with the License. You may obtain a copy of the License in the LICENSE file, or at:
- [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0) 
+
+http://www.apache.org/licenses/LICENSE-2.0
+
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
