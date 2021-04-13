@@ -1,20 +1,11 @@
-[ ![Download](https://api.bintray.com/packages/akexorcist/maven/recycler-background-support-view/images/download.svg?version=1.0.0) ](https://bintray.com/akexorcist/maven/recycler-background-support-view/1.0.0/link)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.akexorcist/recycler-background-support-view/badge.svg)](https://search.maven.org/artifact/com.akexorcist/recycler-background-support-view)
+![Minimum SDK Version](https://img.shields.io/badge/minSdkVersion-18-brightgreen)
+[![Workflow Status](https://github.com/akexorcist/RecyclerBackgroundSupportView/actions/workflows/android.yml/badge.svg)](https://github.com/akexorcist/RecyclerBackgroundSupportView/actions) 
 
 # Android-RecyclerBackgroundSupportView
 Add Image View behind Recycler View with scrollable support
 
 ## Download
-Since version 1.0.0 will [move from JCenter to MavenCentral](https://developer.android.com/studio/build/jcenter-migration)
-```groovy
-// build.gradle (project)
-allprojects {
-    repositories {
-        mavenCentral()
-        /* ... */
-    }
-}
-```
-
 **Gradle**
 ```
 implementation 'com.akexorcist:recycler-background-support-view:1.0.0'
